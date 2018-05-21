@@ -1,0 +1,15 @@
+void merjenje_stevca() {
+  if (napetost < 100 && (micros() - cas) < (3e3)) //micro sekunde!!!!
+  {}
+  else if (napetost < 80 && (micros() - cas) < (10e3)) //micro sekunde!!!! 20e3 micros = 20 millis = 0.02 s = 2 stotinki!!!!!
+  {}
+  else {
+    cas = micros();
+    //pin10 nam pove v katero smer se vrti
+    if (digitalRead(10) == 0) { //pin10 nam pove v katero smer se vrti
+      stevec++;
+    }
+    else stevec--;
+  }
+  return;
+}

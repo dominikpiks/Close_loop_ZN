@@ -1,0 +1,19 @@
+void poisci_peaks() {
+  for (e = 0; e < 200; e++) {
+    if (tabela[e - 1] < tabela[e] && tabela[e + 1] < tabela[e]) {
+      peak_tabela[d] = perioda * e;
+      d++;
+    }
+    else if (tabela[e - 1] < tabela[e] && tabela[e + 1] == tabela[e]) {
+      for (n = e; n++; n < 200) {
+        if (tabela[n] < tabela[e]) {
+          peak_tabela[d] = perioda * e;
+          d++;
+          break;
+        }
+        else if (tabela[n] > tabela[e])
+          break;
+      }
+    }
+  }
+}

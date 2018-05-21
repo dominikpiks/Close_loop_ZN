@@ -1,0 +1,14 @@
+void izracunaj_periodo_nihanja() {
+  n = 0;
+  perioda_nihanja = 0;
+  for (n = 0; n < 20; n++) {
+    if (peak_tabela[n] > 0 && peak_tabela[n + 1] > 0) {
+      perioda_nihanja += (peak_tabela[n + 1] - peak_tabela[n]) / d;
+    }
+  }
+  d = 0;
+  for (n = 0; n < 20; n++) {
+    peak_tabela[n] = 0;
+  }
+  return;
+}

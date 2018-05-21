@@ -1,0 +1,15 @@
+void doloci_napako() {
+  for (i = 9; i > 0; i--) {
+    napaka[i] = napaka[i - 1];
+    napaka[0] = ciljna_vrednost - stevec;
+  }
+  mili_stev = 0;
+  sestevek_napak = 0;
+  premikanja_motorja = 0;
+  for (i = 0; i < 9; i++) {
+    sestevek_napak += abs(napaka[i]);
+    if (abs(napaka[i]) != abs(napaka[i - 1]) )
+      premikanja_motorja++;
+  }
+  return;
+}
