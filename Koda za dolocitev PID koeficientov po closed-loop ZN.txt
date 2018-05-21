@@ -1,0 +1,109 @@
+Koda za dolocitev PID koeficientov po closed-loop ZN.
+#include math.h
+
+#define ENABLE 5   za elego sranje, ki ga potrebujem, da se motor vrti
+#define DIRA 3  ce je dira=1 in dirb=0, se vrti v smeri ure, ce gledas najprej crn del, bel del je zadaj
+#define DIRB 9    PWM pin
+#define outputA 2    input, inputa ni potrebno definirati v setupu
+#define outputB 10  input   na pina 2 in 10 sta povezana senzorja za merjenje stevca, 
+ne jih brisat, da ves kje je kej
+
+
+
+float P, I, D, pid, Accumulator, napaka[9], perioda, perioda_nihanja;
+int i, ciljna_vrednost, sestevek_napak, tabela[200], n, e, d, peak_tabela[20], premikanja_motorja;
+long stevec, napetost;
+short mili_stev;
+unsigned long cas; cas nastopa v merjenju stevca, preprecuje da se prehitro vrti
+bool konec_izpisa, konec_ponovitve;
+
+void doloci_napetost();
+void doloci_napako();
+void merjenje_stevca();
+void izracunaj_periodo_nihanja();
+void poisci_peaks();
+void izracunaj_pot();
+
+
+
+void setup() {
+  ciljna_vrednost = 100; stevec
+  perioda = 10; ms
+  stevec = 0;
+
+  P = 255;
+  I = 0;
+  D = 0;
+
+  cas = 0;
+  d = 0;
+  konec_izpisa = false;
+  konec_ponovitve = false;
+  pinMode(9, OUTPUT); pinMode(3, OUTPUT); pinMode(5, OUTPUT); digitalWrite(5, HIGH);
+  attachInterrupt(digitalPinToInterrupt(2), merjenje_stevca, RISING);
+  Serial.begin(115200);
+   Hardware timer black magic
+  OCR0A = 0xAF;
+  TIMSK0 = _BV(OCIE0A);
+
+}
+
+void loop() {
+
+  if (n = 200 && !konec_izpisa) {
+    konec_izpisa = true;
+    detachInterrupt(digitalPinToInterrupt(2));
+    digitalWrite(9, 0);
+    digitalWrite(3, 0);
+    poisci_peaks();
+
+    for (n = 0; n  20; n++) {
+      Serial.println(peak_tabela[n]);
+    }
+    konec_ponovitve = true;
+    Serial.println(P);
+  }
+
+  if (premikanja_motorja = 1 && konec_ponovitve) {
+    izracunaj_periodo_nihanja();
+    P = P - 10;
+    stevec = 0;
+    cas = 0;
+    konec_izpisa = false;
+    konec_ponovitve = false;
+    attachInterrupt(digitalPinToInterrupt(2), merjenje_stevca, RISING);
+  }
+
+  else if (premikanja_motorja  1 && konec_ponovitve) {
+    konec_izpisa = true;
+    konec_ponovitve = false;
+    detachInterrupt(digitalPinToInterrupt(2));
+    digitalWrite(9, 0);
+    digitalWrite(3, 0);
+    P = (P + 10)  0.6;
+    d = 0;
+    for (n = 0; n  20; n++) {
+      if (peak_tabela[n]  0)
+        d++;
+    }
+    I = 1  (perioda_nihanja  2000); Ki
+    D = (perioda_nihanja  8000); Kd
+    Serial.println(PID);
+    Serial.println(P);
+    Serial.println(I);
+    Serial.println(D);
+  }
+} void loop
+
+
+SIGNAL(TIMER0_COMPA_vect) {
+  mili_stev++;
+  if (mili_stev = perioda && !konec_izpisa) {
+    doloci_napako();
+    tabela[n] = napaka[0];
+    n++;
+
+    pid = napaka[0]  P;
+    doloci_napetost();
+  }
+}
