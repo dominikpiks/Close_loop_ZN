@@ -1,4 +1,4 @@
-Koda za dolocitev PID koeficientov po closed-loop ZN.
+Koda za dolocitev PID koeficientov po closed-loop ZN.DDD
 #include math.h
 
 #define ENABLE 5   za elego sranje, ki ga potrebujem, da se motor vrti
